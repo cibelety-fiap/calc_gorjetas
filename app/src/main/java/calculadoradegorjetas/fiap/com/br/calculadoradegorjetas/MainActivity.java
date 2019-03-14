@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
             double tip = billAmount * percent;
             double total = billAmount + tip;
             amountTextView.setText(currencyFormat.format(billAmount));
+            tipTextView.setText(currencyFormat.format(tip));
+            totalTextView.setText(currencyFormat.format(total));
         }
 
         @Override
