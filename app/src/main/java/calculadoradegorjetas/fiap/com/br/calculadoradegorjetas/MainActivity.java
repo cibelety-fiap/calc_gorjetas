@@ -37,8 +37,13 @@ public class MainActivity extends AppCompatActivity {
     private class SeekbarChangeListener implements SeekBar.OnSeekBarChangeListener {
 
         @Override
-        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            percent = progress / 100d;
+            double tip = billAmount * percent;
+            double total = tip + billAmount;
+            percentTextView.setText(percentFormat.format(percent));
+            tipTextView.setText(currencyFormat.format(tip));
+            totalTextView.setText(currencyFormat.format(total));
         }
 
         @Override
@@ -60,12 +65,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            billAmount = Double.parseDouble(s.toString());
-            double tip = billAmount * percent;
-            double total = billAmount + tip;
-            amountTextView.setText(currencyFormat.format(billAmount));
-            tipTextView.setText(currencyFormat.format(tip));
-            totalTextView.setText(currencyFormat.format(total));
+            try {
+                billAmount = Double.parseDouble(s.toString()) / 100.0;
+                double tip = billAmount * percent;
+                double total = billAmount + tip;
+                amountTextView.setText(currencyFormat.format(billAmount));
+                tipTextView.setText(currencyFormat.format(tip));
+                totalTextView.setText(currencyFormat.format(total));
+            } catch (NumberFormatException e) {
+                amountTextView.setText(currencyFormat.format(0));
+                tipTextView.setText(currencyFormat.format(0));
+                totalTextView.setText(currencyFormat.format(0));
+            }
         }
 
         @Override
